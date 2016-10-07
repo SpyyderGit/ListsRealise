@@ -1,4 +1,4 @@
-package LLIst2;
+package LList2;
 
 import interfaces.EList;
 
@@ -49,7 +49,7 @@ public class LList2 implements EList
 		if (ini == null || ini.length == 0)
 			return;
 
-		for (int i = ini.length - 1; i >= 0; i--)
+		for (int i = 0; i <= ini.length - 1; i++)
 		{
 			addStart(ini[i]);
 		}
@@ -145,7 +145,10 @@ public class LList2 implements EList
 	@Override
 	public void addStart(int[] arr)
 	{
-		addStart(arr);
+		for (int i = 0; i < arr.length; i++)
+		{
+			addEnd(arr[i]);
+		}
 	}
 
 	@Override
@@ -241,63 +244,174 @@ public class LList2 implements EList
 	@Override
 	public int min()
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		int ret = 0;
+		Node p = root;
+		int min = minInd();
+		if (p == null)
+			throw new IllegalArgumentException();
+
+		for (int i = 1; i <= min; i++)
+		{
+			p = p.next;
+		}
+		ret = p.val;
+		return ret;
 	}
 
 	@Override
 	public int max()
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		int ret = 0;
+		Node p = root;
+		if (p == null)
+			throw new IllegalArgumentException();
+
+		for (int i = 1; i <= maxInd(); i++)
+		{
+			p = p.next;
+		}
+		ret = p.val;
+		return ret;
 	}
 
 	@Override
 	public int minInd()
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		Node p = root;
+		if (p == null)
+			throw new IllegalArgumentException();
+
+		int min = root.val;
+		int count = 0;
+		int ret = 0;
+
+		while (p != null)
+		{
+			if (p.val < min)
+			{
+				ret = count;
+				min = p.val;
+			}
+			count++;
+			p = p.next;
+		}
+
+		return ret;
 	}
 
 	@Override
 	public int maxInd()
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		Node p = root;
+		if (p == null)
+			throw new IllegalArgumentException();
+
+		int max = root.val;
+		int count = 0;
+		int ret = 0;
+
+		while (p.next != null)
+		{
+			count++;
+			if (p.next.val > max)
+			{
+				ret = count;
+				max = p.next.val;
+			}
+
+			p = p.next;
+
+		}
+		return ret;
 	}
 
 	@Override
 	public void set(int pos, int val)
 	{
-		// TODO Auto-generated method stub
+		Node p = root;
+		if (p == null)
+			return;
+
+		for (int i = 0; i < pos; i++)
+		{
+			p = p.next;
+		}
+		p.val = val;
 
 	}
 
 	@Override
 	public int get(int val)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		Node p = root;
+		if (p == null)
+			new Exception();
+
+		int ret = 0;
+
+		for (int i = 0; i < val; i++)
+		{
+			p = p.next;
+		}
+		ret = p.val;
+		return ret;
 	}
 
 	@Override
 	public void reverse()
 	{
-		// TODO Auto-generated method stub
+		Node p = root;
+		root = null;
 
+		while (p != null)
+		{
+			addStart(p.val);
+			p = p.next;
+		}
 	}
 
 	@Override
 	public void halfRevers()
 	{
-		// TODO Auto-generated method stub
+		if (size() <= 1)
+			return;
+		int h = size() / 2;
+		int k = size() - h;
+		int delta = size() % 2;
+		int count = k;
+
+		for (int i = 0; i < k; i++)
+		{
+			if (count == delta)
+			{
+				break;
+			}
+			else
+			{
+				int tmp = get(i);
+				set(i, get(i + k));
+				set(i + k, tmp);
+			}
+			count--;
+		}
 
 	}
 
 	@Override
 	public void sort()
 	{
-		// TODO Auto-generated method stub
+		for (int i = size() - 1; i >= 1; i--)
+		{
+			for (int j = 0; j < i; j++)
+			{
+				if (get(j) > get(j + 1))
+				{
+					int tmp = get(j);
+					set(j, get(j + 1));
+					set(j + 1, tmp);
+				}
+			}
+		}
 
 	}
 
