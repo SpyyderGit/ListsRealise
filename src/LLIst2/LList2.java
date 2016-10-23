@@ -1,4 +1,5 @@
-package LList2;
+package LLIst2;
+
 
 import interfaces.EList;
 
@@ -337,7 +338,6 @@ public class LList2 implements EList
 			p = p.next;
 		}
 		p.val = val;
-
 	}
 
 	@Override
