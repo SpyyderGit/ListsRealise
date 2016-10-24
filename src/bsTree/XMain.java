@@ -5,12 +5,12 @@ public class XMain
 
 	public static void main(String[] args)
 	{
-		BSTree tree = new BSTree();
+		BsTree t = new BsTree();
+		int[] ar = { 5, 10, 8, 9, 3, 4, 2 };
+		t.init(ar);
+		t.add(7);
+		t.print();
 
-		int[] ar = { 5, 5, 6, 5, 6, 7, 9 };
-		tree.init(ar);
-		tree.print();
-		System.out.println("size: " + tree.size());
+		System.out.println("\n" + t.leafs());
 	}
-
 }
