@@ -1,5 +1,7 @@
 package bsTree;
 
+import java.awt.FontFormatException;
+
 public class BsTree
 {
 	class Node
@@ -15,6 +17,11 @@ public class BsTree
 	}
 
 	private Node root = null;
+
+	public void clear()
+	{
+		root = null;
+	}
 
 	private void addNode(Node p, int val)
 	{
@@ -54,36 +61,17 @@ public class BsTree
 		}
 	}
 
-	public void init(int[] ar)
+	public void init(int[] ini)
 	{
-		for (int i : ar)
+		for (int i : ini)
 		{
 			add(i);
 		}
 	}
 
-	private void printNode(Node p)
-	{
-		if (p == null)
-		{
-			return;
-		}
-		else
-		{
-			printNode(p.left);
-			printNode(p.right);
-			System.out.print(p.val + ", ");
-		}
-	}
+	private int c = 0;
 
-	public void print()
-	{
-		printNode(root);
-	}
-
-	int c = 0;
-
-	private int sizeNode(Node p)
+	public int sizeNode(Node p)
 	{
 		if (p == null)
 		{
@@ -103,49 +91,16 @@ public class BsTree
 		return sizeNode(root);
 	}
 
-	private int leafsNode(Node p)
+	public int[] toArray()
 	{
-		int c = 0;
-		if (p == null)
+		int[] ar = new int[size()];
+
+		for (int i = 0; i < ar.length; i++)
 		{
-			return 0;
+
 		}
 
-		if (p.left == null && p.right == null)
-		{
-			c++;
-		}
-		c += leafsNode(p.left);
-		c += leafsNode(p.right);
-
-		return c;
+		return ar;
 	}
 
-	public int leafs()
-	{
-		return leafsNode(root);
-	}
-
-	private int nodesNode(Node p)
-	{
-		int count = 0;
-		if (p == null)
-		{
-			return 0;
-		}
-
-		if (p.left != null && p.right != null)
-		{
-			count++;
-		}
-		count += nodesNode(p.left);
-		count += nodesNode(p.right);
-
-		return count;
-	}
-
-	public int nodes()
-	{
-		return nodesNode(root);
-	}
 }

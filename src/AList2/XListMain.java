@@ -1,16 +1,17 @@
 package AList2;
 
+import java.util.Iterator;
+
 import interfaces.EList;
 
 public class XListMain
 {
 	public static void main(String[] args)
 	{
-		AList2 a = new AList2();
-		int[] arr = { 10, 211, 2, 333, 21, 10, 211, 2, 333, 21, 10, 211, 2, 333, 21, 10, 211, 2, 333, 21, 10, 211, 2,
-				333, 21, 10, 211, 2, 333, 21 };
+		AList2 lst = new AList2();
+		int[] arr = { 10, 211, 2, 333, 21, 10, 211, 2 };
 
-		a.init(arr);
+		lst.init(arr);
 
 		int[] tmp = { 1 };
 
@@ -39,7 +40,32 @@ public class XListMain
 
 		// a.addEnd(tmp);
 
-		System.out.println(a);
+		int size = lst.size();
+		for (int i = 0; i < size; i++)
+		{
+			if (arr[i] != 0)
+			{
+				System.out.print(arr[i] + ", ");
+			}
+		}
+
+		System.out.println();
+		for (int i : lst)
+		{
+			if (i != 0)
+			{
+				System.out.print(i + ", ");
+			}
+		}
+
+		System.out.println();
+		Iterator<Integer> itr = lst.iterator();
+
+		while (itr.hasNext())
+		{
+			System.out.print(itr.next() + ", ");
+		}
+		
 	}
 
 }

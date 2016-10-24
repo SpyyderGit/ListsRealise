@@ -3,8 +3,9 @@ package AList2;
 import interfaces.EList;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
-public class AList2 implements EList
+public class AList2 implements EList, Iterable<Integer>
 {
 	private int[] arr = new int[30];
 	private int start = arr.length / 2;
@@ -327,5 +328,32 @@ public class AList2 implements EList
 	public String toString()
 	{
 		return "AList2 " + Arrays.toString(arr);
+	}
+
+	@Override
+	public Iterator<Integer> iterator()
+	{
+		return new MIter();
+	}
+
+	MIter miter = new MIter();
+
+	class MIter implements Iterator<Integer>
+	{
+		int i = 0;
+
+		@Override
+		public boolean hasNext()
+		{
+
+			return i < arr.length;
+		}
+
+		@Override
+		public Integer next()
+		{
+			return arr[i++];
+		}
+
 	}
 }
