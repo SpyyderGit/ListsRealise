@@ -280,37 +280,36 @@ public class BsTree implements IBsTree
 
 	private void delete(Node p, int val)
 	{
-		if (p == null)
-		{
-			return;
-		}
 
-		if (val < p.val)
 		{
-			if (p.left != null)
+			if (p == null)
 			{
-				delete(p.left, val);
+				return;
 			}
-		}
-		else
-		{
-			if (p.right != null)
-			{
-				delete(p.right, val);
-			}
-		}
 
-		if (p.left == root || p.right == root)
-		{
-			root = null;
-		}
-		else if (p.left != null)
-		{
-			if (p.left.val == val)
+			if (val < p.val)
+			{
+				if (p.left != null)
+				{
+					delete(p.left, val);
+				}
+			}
+			else
+			{
+				if (p.right != null)
+				{
+					delete(p.right, val);
+				}
+			}
+			if (p.left == root || p.right == root)
+			{
+				root = null;
+			}
+			else if (p.left != null && p.left.val == val)
 			{
 				p.left = null;
 			}
-			else if (p.right.val == val)
+			else if (p.right != null && p.right.val == val)
 			{
 				p.right = null;
 			}

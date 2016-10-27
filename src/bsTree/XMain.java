@@ -10,7 +10,7 @@ public class XMain
 		t.init(ar);
 		// t.add(7);
 		// t.reverse();
-		t.delete(2);
+		t.delete(15);
 		System.out.println(t.toString());
 		// System.out.println("\n" + t.leafs());
 		//
