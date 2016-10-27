@@ -5,9 +5,15 @@ public class XMain
 
 	public static void main(String[] args)
 	{
-		BsTree tree = new BsTree();
-
-		int[] ar = { 5, 5, 6, 5, 6, 7, 9 };
-
+		BsTree t = new BsTree();
+		int[] ar = { 5, 10, 8, 9, 3, 2, 4, 15, 7 };
+		t.init(ar);
+		// t.add(7);
+		// t.reverse();
+		t.delete(2);
+		System.out.println(t.toString());
+		// System.out.println("\n" + t.leafs());
+		//
+		// t.toString();
 	}
 }

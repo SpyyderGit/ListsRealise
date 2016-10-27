@@ -1,5 +1,7 @@
 package bsTree;
 
+import java.util.ArrayList;
+
 public class BsTree implements IBsTree
 {
 
@@ -125,7 +127,7 @@ public class BsTree implements IBsTree
 			str += i + ", ";
 		}
 
-		return "BsTree: [" + str + "]";
+		return str;
 	}
 
 	private int nodes(Node p)
@@ -163,6 +165,7 @@ public class BsTree implements IBsTree
 
 		if (p.left == null && p.right == null)
 		{
+
 			count++;
 		}
 		else
@@ -181,7 +184,6 @@ public class BsTree implements IBsTree
 
 	private int height(Node p)
 	{
-
 		if (p == null)
 		{
 			return 0;
@@ -213,47 +215,137 @@ public class BsTree implements IBsTree
 		return res;
 	}
 
+	private int res = 0;
+
 	@Override
 	public int height()
 	{
 		return height(root);
 	}
 
-	private int width(Node p)
+	int count = 0;
+
+	private int[] width(Node p, int[] ar)
 	{
-		int res = 0;
-		int count = 0;
 
 		if (p == null)
 		{
-			return 0;
+			return null;
 		}
+		width(p.left, ar);
 
-		if (p.left == null && p.right == null)
+		width(p.right, ar);
+
+		if (p.left != null)
 		{
+			// ar[i++] = count;
+
 			count++;
+			System.out.print(count + ":" + p.val + ", ");
 		}
-		else
-		{
-			count += width(p.left);
-			count += width(p.right);
-		}
-		return count;
+		return ar;
 	}
 
 	@Override
-	public int width()
+	public int[] width()
 	{
-		return width(root);
+		int[] ar = new int[size()];
+
+		return width(root, ar);
+	}
+
+	private void reverse(Node p)
+	{
+		if (p.left != null)
+		{
+			reverse(p.right);
+		}
+		if (p.right != null)
+		{
+			reverse(p.left);
+		}
+		System.out.print(p.val + ", ");
 	}
 
 	@Override
 	public void reverse()
 	{
+		if (root == null)
+		{
+			return;
+		}
+
+		reverse(root);
+	}
+
+	private void delete(Node p, int val)
+	{
+		if (p == null)
+		{
+			return;
+		}
+
+		if (val < p.val)
+		{
+			if (p.left != null)
+			{
+				delete(p.left, val);
+			}
+		}
+		else
+		{
+			if (p.right != null)
+			{
+				delete(p.right, val);
+			}
+		}
+
+		if (p.left == root || p.right == root)
+		{
+			root = null;
+		}
+		else if (p.left != null)
+		{
+			if (p.left.val == val)
+			{
+				p.left = null;
+			}
+			else if (p.right.val == val)
+			{
+				p.right = null;
+			}
+		}
 	}
 
 	@Override
 	public void delete(int p)
 	{
+		if (root == null)
+		{
+			return;
+		}
+		delete(root, p);
 	}
+
+	private void show(Node p)
+	{
+		if (p == null)
+		{
+			return;
+		}
+
+		show(p.left);
+		if (p.left != null)
+		{
+			System.out.print(p.val + ": left, ");
+		}
+		show(p.right);
+	}
+
+	public void show()
+	{
+
+		show(root);
+	}
+
 }
