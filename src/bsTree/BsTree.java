@@ -265,13 +265,19 @@ public class BsTree implements IBsTree
 
 	private void reverse(Node p)
 	{
+		if (root == null)
+		{
+			return;
+		}
+
 		if (p.left != null)
 		{
-			reverse(p.right);
+			reverse(p.left);
 		}
+
 		if (p.right != null)
 		{
-			reverse(p.left);
+			reverse(p.right);
 		}
 		System.out.print(p.val + ", ");
 	}
