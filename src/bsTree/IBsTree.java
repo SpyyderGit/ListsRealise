@@ -20,7 +20,7 @@ public interface IBsTree
 
 	int height();
 
-	int[] width();
+	int width();
 
 	void reverse();
 

@@ -6,12 +6,15 @@ public class XMain
 	public static void main(String[] args)
 	{
 		BsTree t = new BsTree();
-		int[] ar = { 5, 10, 8, 9, 3, 2, 4, 15, 7 };
+		int[] ar = { 10, 5, 15, 22, 1, 6, 4 };
 		t.init(ar);
 		// t.add(7);
 		// t.reverse();
-		t.delete(15);
-		System.out.println(t.toString());
+		// t.delete(4);
+
+		// t.add(58);
+		System.out.println(t.height());
+		// System.out.println(t.toString());
 		// System.out.println("\n" + t.leafs());
 		//
 		// t.toString();

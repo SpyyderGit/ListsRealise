@@ -120,6 +120,7 @@ public class BsTree implements IBsTree
 	@Override
 	public String toString()
 	{
+
 		int[] ar = toArray();
 		String str = "";
 		for (int i : ar)
@@ -138,10 +139,12 @@ public class BsTree implements IBsTree
 			return 0;
 		}
 
-		if (p.left != null && p.right != null)
+		if (p.left != null || p.right != null)
 		{
 			count++;
+			System.out.print(p.val + ", ");
 		}
+
 		count += nodes(p.left);
 		count += nodes(p.right);
 
@@ -151,7 +154,6 @@ public class BsTree implements IBsTree
 	@Override
 	public int nodes()
 	{
-
 		return nodes(root);
 	}
 
@@ -190,19 +192,12 @@ public class BsTree implements IBsTree
 		}
 
 		int countRight = 0;
-		int res = 0;
 		int countLeft = 0;
 
-		if (p.right != null)
-		{
-			countRight++;
-		}
-		countRight += height(p.right);
-		if (p.left != null)
-		{
-			countLeft++;
-		}
 		countLeft += height(p.left);
+		countLeft++;
+		countRight++;
+		countRight += height(p.right);
 
 		if (countLeft > countRight)
 		{
@@ -225,33 +220,47 @@ public class BsTree implements IBsTree
 
 	int count = 0;
 
-	private int[] width(Node p, int[] ar)
+	@Override
+	public int width()
 	{
-
-		if (p == null)
+		if (root == null)
 		{
-			return null;
+			throw new IllegalArgumentException();
 		}
-		width(p.left, ar);
-
-		width(p.right, ar);
-
-		if (p.left != null)
+		else
 		{
-			// ar[i++] = count;
-
-			count++;
-			System.out.print(count + ":" + p.val + ", ");
+			int i = 0;
+			int[] ar = new int[height()];
+			widthCounter(root, ar, i);
+			return widthMax(ar);
 		}
-		return ar;
 	}
 
-	@Override
-	public int[] width()
+	private void widthCounter(Node p, int[] ar, int i)
 	{
-		int[] ar = new int[size()];
+		if (p == null)
+		{
+			return;
+		}
+		else
+		{
+			widthCounter(p.left, ar, i + 1);
+			ar[i]++;
+			widthCounter(p.right, ar, i + 1);
+		}
+	}
 
-		return width(root, ar);
+	private int widthMax(int[] ar)
+	{
+		int max = ar[0];
+		for (int i = 0; i < ar.length; i++)
+		{
+			if (ar[i] > max)
+			{
+				max = ar[i];
+			}
+		}
+		return max;
 	}
 
 	private void reverse(Node p)
@@ -281,37 +290,86 @@ public class BsTree implements IBsTree
 	private void delete(Node p, int val)
 	{
 
+		if (p == null)
 		{
-			if (p == null)
+			return;
+		}
+		if (val < p.val)
+		{
+			if (p.left != null)
 			{
-				return;
+				delete(p.left, val);
 			}
-
-			if (val < p.val)
+		}
+		else
+		{
+			if (p.right != null)
 			{
-				if (p.left != null)
-				{
-					delete(p.left, val);
-				}
+				delete(p.right, val);
+			}
+		}
+
+		if (p.left == root || p.right == root)
+		{
+			root = null;
+		}
+		else if (p.left != null && p.left.val == val)
+		{
+			if (p.left == null)
+			{
+				p = null;
 			}
 			else
 			{
-				if (p.right != null)
+				p.left = p.left.left;
+			}
+		}
+		else if (p.right != null && p.right.val == val)
+		{
+			if (p.right == null)
+			{
+				p = null;
+			}
+			else
+			{
+				p.right = p.right.right;
+			}
+		}
+	}
+
+	void deleteTwo(Node p, Node c, int val)
+	{
+		if (p == null)
+		{
+			return;
+		}
+		if (val < p.val)
+		{
+
+			if (p.left != null)
+			{
+				deleteTwo(p.left, c, val);
+				if (p.left.val == val)
 				{
-					delete(p.right, val);
+					System.out.println(p.val);
+
+					// p.left = p.left.right;
+					// System.out.println(p.left.left.val);
+
 				}
 			}
-			if (p.left == root || p.right == root)
+		}
+		else
+		{
+			if (p.right != null)
 			{
-				root = null;
-			}
-			else if (p.left != null && p.left.val == val)
-			{
-				p.left = null;
-			}
-			else if (p.right != null && p.right.val == val)
-			{
-				p.right = null;
+				deleteTwo(p.right, c, val);
+
+				if (p.right.val == val && p.right.left != null || p.right.right != null)
+				{
+					System.out.println(p.right.val);
+				}
+
 			}
 		}
 	}
@@ -323,7 +381,7 @@ public class BsTree implements IBsTree
 		{
 			return;
 		}
-		delete(root, p);
+		deleteTwo(root, root, p);
 	}
 
 	private void show(Node p)
@@ -343,7 +401,6 @@ public class BsTree implements IBsTree
 
 	public void show()
 	{
-
 		show(root);
 	}
 
