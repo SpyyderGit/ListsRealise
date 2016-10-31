@@ -22,9 +22,7 @@ public class TPanel extends JPanel
 		jtf = new JTextField("0");
 		JButton btn = new JButton("show");
 		JButton btnDel = new JButton("Delete");
-        
-		
-		
+
 		JButton add = new JButton("add");
 		add.setBounds(150, 10, 120, 20);
 
@@ -33,10 +31,9 @@ public class TPanel extends JPanel
 
 		btn.setBounds(10, 10, 120, 20);
 		btn.addActionListener(new ShowAction());
-		
+
 		btnDel.setBounds(300, 10, 120, 20);
-		
-		
+
 		add(btn);
 		add(add);
 		add(btnDel);
@@ -59,7 +56,7 @@ public class TPanel extends JPanel
 
 			}
 		});
-		
+
 		btnDel.addActionListener(new ActionListener()
 		{
 
@@ -86,7 +83,7 @@ public class TPanel extends JPanel
 
 			BsTreeGr gr = new BsTreeGr();
 			gr.init(ar);
-//			gr.delete(25);
+//     		gr.delete(25);
 
 			gr.show(TPanel.this);
 

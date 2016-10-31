@@ -298,7 +298,7 @@ public class BsTree implements IBsTree
 		reverse(root);
 	}
 
-	private void delete(Node p, int val)
+	private void deleteEnd(Node p, int val)
 	{
 
 		if (p == null)
@@ -309,14 +309,14 @@ public class BsTree implements IBsTree
 		{
 			if (p.left != null)
 			{
-				delete(p.left, val);
+				deleteEnd(p.left, val);
 			}
 		}
 		else
 		{
 			if (p.right != null)
 			{
-				delete(p.right, val);
+				deleteEnd(p.right, val);
 			}
 		}
 
@@ -350,9 +350,9 @@ public class BsTree implements IBsTree
 
 	private Node n = null;
 
+	// Поиск эелемента, которым будем заменять удаляемый
 	Node findDel(Node p, int val)
 	{
-
 		if (p == null)
 		{
 			return null;
@@ -365,12 +365,11 @@ public class BsTree implements IBsTree
 			{
 				if (p.right.right == null)
 				{
-					// System.out.print(p.right.val + ", ");
 					n = p;
 				}
 			}
 		}
-		else if (p.left != null)
+		else if (p.right != null)
 		{
 			if (p.val > val)
 			{
@@ -385,10 +384,33 @@ public class BsTree implements IBsTree
 		return n;
 	}
 
-	void test(int val)
+	Node test(int val)
 	{
-		System.out.println(findDel(root, val));
-		// return findDel(root, val);
+		// System.out.println(findDel(root, val));
+		return searchMaxInLeft(root, val);
+	}
+
+	// Поиск самого большого значения в левой подветке
+	Node m = null;
+
+	private Node searchMaxInLeft(Node p, int val)
+	{
+		if (p == null)
+		{
+			return null;
+		}
+
+		if (p.right != null)
+		{
+			if (p.val < root.val && p.right.right == null && val < p.right.val)
+			{
+				// System.out.println(p.val);
+				m = p;
+			}
+		}
+		searchMaxInLeft(p.right, val);
+		searchMaxInLeft(p.left, val);
+		return m;
 	}
 
 	void deleteTwo(Node p, Node c, int val)
@@ -398,7 +420,44 @@ public class BsTree implements IBsTree
 		{
 			return;
 		}
+
 		c = p.left;
+		// Обработка ситуации с одной вершиной без потомков
+		// Вершина левый 1-н потомок
+		// Вершина один правый потомок
+		// Вершина и только левый и правый потомок
+		// ===================================================================
+		if (val == root.val)
+		{
+			if (root != null && root.left == null && root.right == null)
+			{
+				root = null;
+			}
+			else if (root.left != null && root.right != null)
+			{
+				Node tmp = root.right;
+				root = p.left;
+                root.right = tmp;
+				System.out.println(root.val);
+				// p.left.right = root.right;
+
+			}
+			if (root.left == null && root.right != null)
+			{
+				root = p.right;
+			}
+			else
+			{
+				// System.out.println(p.val);
+			}
+		}
+		// ====================================================================
+
+		// Обработка ситуации с вершиной, потомками и поддеревьями
+		// Нужно найти самый большой узел в левой ветке
+
+		// ====================================================================
+
 		deleteTwo(p.left, c, val);
 		if (p.left != null)
 		{
@@ -410,7 +469,7 @@ public class BsTree implements IBsTree
 				find.left = c.left;
 				p.left = find;
 				parent.right = null;
-				System.out.println(p.left.val);
+				// System.out.println(p.left.val);
 			}
 		}
 
@@ -420,13 +479,14 @@ public class BsTree implements IBsTree
 	}
 
 	@Override
-	public void delete(int p)
+	public void delete(int val)
 	{
 		if (root == null)
 		{
 			return;
 		}
-		deleteTwo(root, root, p);
+		deleteTwo(root, root, val);
+		// searchMaxInLeft(root, val);
 	}
 
 	private void show(Node p)
