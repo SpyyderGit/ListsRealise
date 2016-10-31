@@ -366,7 +366,7 @@ public class BsTree implements IBsTree
 				if (p.right.right == null)
 				{
 					// System.out.print(p.right.val + ", ");
-					n = p.right;
+					n = p;
 				}
 			}
 		}
@@ -399,32 +399,23 @@ public class BsTree implements IBsTree
 			return;
 		}
 		c = p.left;
-
+		deleteTwo(p.left, c, val);
 		if (p.left != null)
 		{
 			if (val == c.val)
 			{
-				System.out
-						.println("Find: " + c.val + " : " + findDel(c, c.val).val + ": " + c.left.val + " : " + p.val);
-
-				Node f = findDel(c, c.val);
-
-				p.right = f;
-				f.right = c.right;
-				f.left = c.left;
-				 c = f;
-				System.out.println(f.right.val);
-
-				// c = findDel(c, c.val);
-//				System.out.println(p.val);
+				Node parent = findDel(c, c.val);
+				Node find = findDel(c, c.val).right;
+				find.right = c.right;
+				find.left = c.left;
+				p.left = find;
+				parent.right = null;
+				System.out.println(p.left.val);
 			}
 		}
 
-		deleteTwo(p.left, c, val);
-		// System.out.print(p.val + " ");
+		// System.out.println(p.val);
 		deleteTwo(p.right, c, val);
-
-		// System.out.println(p.val + " : " + k);
 
 	}
 
@@ -435,7 +426,6 @@ public class BsTree implements IBsTree
 		{
 			return;
 		}
-		// deleteTwo(root, root, p);
 		deleteTwo(root, root, p);
 	}
 
