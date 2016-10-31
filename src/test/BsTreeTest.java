@@ -419,4 +419,96 @@ public class BsTreeTest
 		assertEquals(3, t.width());
 	}
 
+	// ========= Тесты на удаление из дерева ======================
+
+	// ---------- Проверка на null ----------------------
+
+	@Test(expected = NullPointerException.class)
+	public void testDel_Null()
+	{
+		int[] ar = null;
+		t.init(ar);
+		t.delete(5);
+		int[] actuals = null;
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+
+	}
+
+	// ------- Пустое дерево -----------------
+
+	@Test
+	public void testDel_Emty()
+	{
+		int[] ar = {};
+		t.init(ar);
+		t.delete(5);
+		int[] actuals = null;
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+	}
+
+	// ------------- Удаление листов ---------------
+
+	// --------- Листья слева, левая ветка
+	@Test
+	public void testDel_LeavesLeftLeft()
+	{
+		int[] ar = { 50, 25, 30, 11, 12, 7, 75, 90, 110, 70 };
+		t.init(ar);
+		t.delete(7);
+		int[] actuals = { 11, 12, 25, 30, 50, 70, 75, 90, 110 };
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+	}
+
+	// --------- Листья слева, левая ветка
+	@Test
+	public void testDel_LeavesLeftRight()
+	{
+		int[] ar = { 50, 25, 30, 11, 12, 13, 7, 75, 90, 110, 70 };
+		t.init(ar);
+		t.delete(13);
+		int[] actuals = { 7, 11, 12, 25, 30, 50, 70, 75, 90, 110 };
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+	}
+
+	// ----------- Листья справа -----------
+
+	@Test
+	public void testDel_LeavesRight()
+	{
+		int[] ar = { 50, 25, 30, 11, 12, 7, 75, 90, 110, 70 };
+		t.init(ar);
+		t.delete(110);
+		int[] actuals = { 7, 11, 12, 25, 30, 50, 70, 75, 90 };
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+	}
+
+	// --------- Листья справа, левая ветка
+	@Test
+	public void testDel_LeavesRightLeft()
+	{
+		int[] ar = { 50, 25, 30, 11, 12, 13, 7, 75, 90, 110, 70 };
+		t.init(ar);
+		t.delete(70);
+		int[] actuals = { 7, 11, 12, 13, 25, 30, 50, 75, 90, 110 };
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+	}
+
+	// --------- Листья справа, правая ветка
+	@Test
+	public void testDel_LeavesRightRight()
+	{
+		int[] ar = { 50, 25, 30, 11, 12, 13, 7, 75, 90, 110, 70 };
+		t.init(ar);
+		t.delete(110);
+		int[] actuals = { 7, 11, 12, 13, 25, 30, 50, 70, 75, 90 };
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+	}
+
 }

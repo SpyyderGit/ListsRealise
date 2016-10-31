@@ -21,22 +21,17 @@ public class TPanel extends JPanel
 		setLayout(null);
 		jtf = new JTextField("0");
 		JButton btn = new JButton("show");
-		JButton btnDel = new JButton("Delete");
 
 		JButton add = new JButton("add");
 		add.setBounds(150, 10, 120, 20);
 
-		jtf.setBounds(450, 10, 120, 20);
+		jtf.setBounds(350, 10, 120, 20);
 		add(jtf);
 
 		btn.setBounds(10, 10, 120, 20);
 		btn.addActionListener(new ShowAction());
-
-		btnDel.setBounds(300, 10, 120, 20);
-
 		add(btn);
 		add(add);
-		add(btnDel);
 
 		setBounds(20, 20, 1000, 800);
 		setBackground(Color.white);
@@ -52,22 +47,7 @@ public class TPanel extends JPanel
 				BsTreeGr gr = new BsTreeGr();
 				gr.init(ar);
 				gr.add(d);
-				gr.show(TPanel.this);
 
-			}
-		});
-
-		btnDel.addActionListener(new ActionListener()
-		{
-
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				int[] ar = { 50, 25, 30, 11, 7, 12, 75, 90, 110, 13 };
-				int d = Integer.parseInt(jtf.getText());
-				BsTreeGr gr = new BsTreeGr();
-				gr.init(ar);
-				gr.delete(d);
 				gr.show(TPanel.this);
 
 			}
@@ -79,11 +59,12 @@ public class TPanel extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
-			int[] ar = { 50, 25, 30, 11, 7, 12, 75, 90, 110, 13 };
+			int[] ar = { 50, 25, 30, 11, 7, 12, 75, 90, 110, 13,70};
+//			int[] ar = { 50, 25, 30, 11, 7, 75, 90, 110,70};
 
 			BsTreeGr gr = new BsTreeGr();
 			gr.init(ar);
-//     		gr.delete(25);
+			// gr.add(d);
 
 			gr.show(TPanel.this);
 
