@@ -13,7 +13,7 @@ public class XListMain
 
 		lst.init(arr);
 
-		int[] tmp = { 1 };
+		int[] tmp = new int[arr.length];
 
 		// a.balanceEnd();
 
@@ -40,32 +40,35 @@ public class XListMain
 
 		// a.addEnd(tmp);
 
+		int i1 = 0;
+		System.out.println();
+		for (int m : lst)
+		{
+			tmp[i1] = m;
+		}
+
 		int size = lst.size();
 		for (int i = 0; i < size; i++)
 		{
-			if (arr[i] != 0)
-			{
-				System.out.print(arr[i] + ", ");
-			}
+			System.out.print(tmp[i] + ", ");
+
 		}
 
 		System.out.println();
-		for (int i : lst)
-		{
-			if (i != 0)
-			{
-				System.out.print(i + ", ");
-			}
-		}
 
-		System.out.println();
 		Iterator<Integer> itr = lst.iterator();
-
+		int t = itr.next();
+		int n = 0;
 		while (itr.hasNext())
 		{
-			System.out.print(itr.next() + ", ");
+
+			// System.out.println(i);
+			if (t != 0)
+			
+				System.out.print(itr.next() + ", ");
+			
 		}
-		
+
 	}
 
 }

@@ -16,11 +16,8 @@ public class Alist2Test
 		al.init(ini);
 		int[] actuals = new int[al.size()];
 		int d = 0;
-		for (int i : al)
-		{
-			actuals[d] = i;
-			d++;
-		}
+
+		
 
 		int[] expecteds = al.toArray();
 

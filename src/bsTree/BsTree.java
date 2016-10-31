@@ -1,11 +1,18 @@
 package bsTree;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Label;
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import javax.swing.JPanel;
 
 public class BsTree implements IBsTree
 {
 
-	class Node
+	protected class Node
 	{
 		int val;
 		Node left;
@@ -18,7 +25,7 @@ public class BsTree implements IBsTree
 
 	}
 
-	Node root = null;
+	protected Node root = null;
 
 	@Override
 	public void clear()
@@ -184,6 +191,8 @@ public class BsTree implements IBsTree
 		return leaves(root);
 	}
 
+	private int res = 0;
+
 	private int height(Node p)
 	{
 		if (p == null)
@@ -210,15 +219,13 @@ public class BsTree implements IBsTree
 		return res;
 	}
 
-	private int res = 0;
-
 	@Override
 	public int height()
 	{
 		return height(root);
 	}
 
-	int count = 0;
+	// int count = 0;
 
 	@Override
 	public int width()
@@ -227,13 +234,12 @@ public class BsTree implements IBsTree
 		{
 			throw new IllegalArgumentException();
 		}
-		else
-		{
-			int i = 0;
-			int[] ar = new int[height()];
-			widthCounter(root, ar, i);
-			return widthMax(ar);
-		}
+
+		int i = 0;
+		int[] ar = new int[height()];
+		widthCounter(root, ar, 0);
+		return widthMax(ar);
+
 	}
 
 	private void widthCounter(Node p, int[] ar, int i)
@@ -242,12 +248,11 @@ public class BsTree implements IBsTree
 		{
 			return;
 		}
-		else
-		{
-			widthCounter(p.left, ar, i + 1);
-			ar[i]++;
-			widthCounter(p.right, ar, i + 1);
-		}
+
+		widthCounter(p.left, ar, i + 1);
+		ar[i]++;
+		widthCounter(p.right, ar, i + 1);
+
 	}
 
 	private int widthMax(int[] ar)
@@ -343,41 +348,84 @@ public class BsTree implements IBsTree
 		}
 	}
 
+	private Node n = null;
+
+	Node findDel(Node p, int val)
+	{
+
+		if (p == null)
+		{
+			return null;
+		}
+		findDel(p.left, val);
+
+		if (p.right != null)
+		{
+			if (p.val < val)
+			{
+				if (p.right.right == null)
+				{
+					// System.out.print(p.right.val + ", ");
+					n = p.right;
+				}
+			}
+		}
+		else if (p.left != null)
+		{
+			if (p.val > val)
+			{
+				if (p.left.left == null)
+				{
+					System.out.print(p.left.val + ", ");
+				}
+			}
+		}
+
+		findDel(p.right, val);
+		return n;
+	}
+
+	void test(int val)
+	{
+		System.out.println(findDel(root, val));
+		// return findDel(root, val);
+	}
+
 	void deleteTwo(Node p, Node c, int val)
 	{
+
 		if (p == null)
 		{
 			return;
 		}
-		if (val < p.val)
+		c = p.left;
+
+		if (p.left != null)
 		{
-
-			if (p.left != null)
+			if (val == c.val)
 			{
-				deleteTwo(p.left, c, val);
-				if (p.left.val == val)
-				{
-					System.out.println(p.val);
+				System.out
+						.println("Find: " + c.val + " : " + findDel(c, c.val).val + ": " + c.left.val + " : " + p.val);
 
-					// p.left = p.left.right;
-					// System.out.println(p.left.left.val);
+				Node f = findDel(c, c.val);
 
-				}
+				p.right = f;
+				f.right = c.right;
+				f.left = c.left;
+				 c = f;
+				System.out.println(f.right.val);
+
+				// c = findDel(c, c.val);
+//				System.out.println(p.val);
 			}
 		}
-		else
-		{
-			if (p.right != null)
-			{
-				deleteTwo(p.right, c, val);
 
-				if (p.right.val == val && p.right.left != null || p.right.right != null)
-				{
-					System.out.println(p.right.val);
-				}
+		deleteTwo(p.left, c, val);
+		// System.out.print(p.val + " ");
+		deleteTwo(p.right, c, val);
 
-			}
-		}
+		// System.out.println(p.val + " : " + k);
+
 	}
 
 	@Override
@@ -387,6 +435,7 @@ public class BsTree implements IBsTree
 		{
 			return;
 		}
+		// deleteTwo(root, root, p);
 		deleteTwo(root, root, p);
 	}
 
@@ -404,10 +453,4 @@ public class BsTree implements IBsTree
 		}
 		show(p.right);
 	}
-
-	public void show()
-	{
-		show(root);
-	}
-
 }
