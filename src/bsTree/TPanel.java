@@ -59,8 +59,8 @@ public class TPanel extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
-			int[] ar = { 50, 25, 30, 11, 7, 12, 75, 90, 110, 13,70};
-//			int[] ar = { 50, 25, 30, 11, 7, 75, 90, 110,70};
+			int[] ar = { 50, 25, 30, 11, 12, 13, 7, 75, 90, 110, 70, 60, 6, 80, 79 };
+			// int[] ar = { 50, 25, 30, 11, 7, 75, 90, 110,70};
 
 			BsTreeGr gr = new BsTreeGr();
 			gr.init(ar);

@@ -379,7 +379,7 @@ public class BsTree implements IBsTree
 				{
 					if (p.left.left == null)
 					{
-						System.out.print(p.left.val + ", ");
+						n = p;
 					}
 				}
 			}
@@ -425,7 +425,7 @@ public class BsTree implements IBsTree
 		{
 			return;
 		}
-		deleteEnd(p, val);
+//		deleteEnd(p, val);
 		c = p.left;
 		// Обработка ситуации с одной вершиной без потомков
 		// Вершина левый 1-н потомок
@@ -441,9 +441,11 @@ public class BsTree implements IBsTree
 			else if (root.left != null && root.right != null)
 			{
 				Node tmp = root.right;
+				root.right = null;
 				root = p.left;
 				root.right = tmp;
-				System.out.println(root.val);
+
+				// System.out.println(root.right.val);
 				// p.left.right = root.right;
 
 			}
@@ -451,9 +453,9 @@ public class BsTree implements IBsTree
 			{
 				root = p.right;
 			}
-			else
+			if (root.left != null && root.right == null)
 			{
-				// System.out.println(p.val);
+				root = p.left;
 			}
 		}
 
@@ -477,7 +479,7 @@ public class BsTree implements IBsTree
 				find.left = c.left;
 				p.left = find;
 				parent.right = null;
-				// System.out.println(p.left.val);
+				System.out.println(p.left.val);
 			}
 		}
 
