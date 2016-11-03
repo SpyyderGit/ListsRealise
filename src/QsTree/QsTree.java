@@ -1,9 +1,5 @@
 package QsTree;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-
 public class QsTree
 {
 	class Node
@@ -20,15 +16,13 @@ public class QsTree
 		{
 			this.val1 = val1;
 		}
-
 	}
 
 	private Node root = null;
 
-	private ArrayList<Integer> ar = new ArrayList<>();
-
-	private void nodeProcessing(Node p, Integer val)
+	private void addNode(Node p, Integer val)
 	{
+		// Задаем значения корня
 
 		if (p.val2 == null)
 		{
@@ -60,51 +54,60 @@ public class QsTree
 				p.val3 = val;
 			}
 		}
-	}
-
-	private void addNode(Node p, Integer val)
-	{
-		// Задаем значения корня
-
-		if (p.left != null)
-		{
-			addNode(p.left, val);
-		}
-		if (p.midLeft != null)
-		{
-			addNode(p.midLeft, val);
-		}
-		if (p.midRight != null)
-		{
-			addNode(p.midRight, val);
-		}
-		if (p.right != null)
-		{
-			addNode(p.right, val);
-		}
-
-		nodeProcessing(p, val);
-
-		// =================================================================
-
-		// System.out.println(p.val1 + " " + p.val2 + " " + p.val3);
 
 		if (val < p.val1)
 		{
-			p.left = new Node(val);
-			if (p.left.val1 != null)
+			if (p.left == null)
 			{
-                System.out.println("ddd");
+				p.left = new Node(val);
 			}
+			else
+			{
+				addNode(p.left, val);
+			}
+		}
+		if (val > p.val1 && val < p.val2)
+		{
+			if (p.midLeft == null)
+			{
+				p.midLeft = new Node(val);
+			}
+			else
+			{
+				addNode(p.midLeft, val);
+			}
+		}
 
-			// nodeProcessing(p.left, val);
+		if (p.val3 != null)
+		{
+			if (val > p.val2 && val < p.val3)
+			{
+				if (p.midRight == null)
+				{
+					p.midRight = new Node(val);
+				}
+				else
+				{
+					addNode(p.midRight, val);
+				}
+			}
+			else if (val > p.val3)
+			{
+				if (p.right == null)
+				{
+					p.right = new Node(val);
+				}
+				else
+				{
+					addNode(p.right, val);
+				}
+			}
 		}
 
 	}
 
 	public void add(Integer val)
 	{
-		// Если пусто в val1 вставляем значение
 		if (root == null)
 		{
 			root = new Node(val);
@@ -118,8 +121,48 @@ public class QsTree
 		for (int i : ini)
 		{
 			add(i);
-
 		}
+	}
+
+	private int sizeNode(Node p)
+	{
+
+		int i = 0;
+
+		if (p == null)
+		{
+			return 0;
+		}
+
+		i += sizeNode(p.left);
+		if (p.val1 != null)
+		{
+			i++;
+		}
+		i += sizeNode(p.midLeft);
+		if (p.val2 != null)
+		{
+			i++;
+		}
+
+		i += sizeNode(p.midRight);
+		if (p.val3 != null)
+		{
+			i++;
+		}
+		i += sizeNode(p.right);
+
+		return i;
+	}
+
+	public int size()
+	{
+		if (root == null)
+		{
+			return 0;
+		}
+
+		return sizeNode(root);
 	}
 
 	private String toStringNode(Node p)
@@ -130,31 +173,59 @@ public class QsTree
 			return "";
 		}
 
-		toStringNode(p.left);
-		str += p.val1 + ", ";
-
-		toStringNode(p.midLeft);
-
-		str += p.val2 + ", ";
-
-		toStringNode(p.midRight);
-		str += p.val3 + ", ";
-
-		toStringNode(p.right);
-
 		if (p.left != null)
 		{
-			if (p.val1 == null || p.val2 == null || p.val3 == null)
-			{
-				str += "";
-			}
-			else
-			{
-				str += p.left.val1 + ", ";
-				str += p.left.val2 + ", ";
-				str += p.left.val3 + ", ";
-			}
+			str += toStringNode(p.left);
 		}
+		// ====================================================
+		if (p.val1 == null)
+		{
+			str += "";
+		}
+		else
+		{
+			str += p.val1 + ", ";
+		}
+		// ======================================================
+
+		if (p.midLeft != null)
+		{
+			str += toStringNode(p.midLeft);
+		}
+
+		// ========================================================
+
+		if (p.val2 == null)
+		{
+			str += "";
+		}
+		else
+		{
+			str += p.val2 + ", ";
+		}
+
+		// ===============================================
+
+		if (p.midRight != null)
+		{
+			str += toStringNode(p.midRight);
+		}
+
+		if (p.val3 == null)
+		{
+			str += "";
+		}
+		else
+		{
+			str += p.val3 + ", ";
+		}
+
+		if (p.right != null)
+		{
+			str += toStringNode(p.right);
+		}
+
+		// ===============================================
 
 		return str;
 	}
