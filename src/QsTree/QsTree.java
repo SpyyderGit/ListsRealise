@@ -18,7 +18,7 @@ public class QsTree
 		}
 	}
 
-	private Node root = null;
+	protected Node root = null;
 
 	private void addNode(Node p, Integer val)
 	{
@@ -126,7 +126,6 @@ public class QsTree
 
 	private int sizeNode(Node p)
 	{
-
 		int i = 0;
 
 		if (p == null)
