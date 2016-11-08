@@ -1,25 +1,40 @@
 package bsTree;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Iterator;
+import java.util.LinkedList;
+
+import AList0.AList0;
+import Iterators.LList1;
+
 public class XMain
 {
 
 	public static void main(String[] args)
 	{
 		BsTree t = new BsTree();
-		int[] ar = { 50, 25, 30, 11,12,13, 7, 75, 90, 110,70};
-		// int[] ar = { 50, 25, 75 };
+		BsTree t1 = new BsTree();
+		int[] ar = { 50, 25, 30, 11, 7, 12, 75, 90, 110, 13, 70, 35, 28 };
+		// int[] ar1 = { 50, 25, 30, 11, 7, 12, 75, 90, 110, 13, 70, 35, 28 };
+
 		t.init(ar);
-		// t.add(7);
-		// t.reverse();
-	t.delete(25);
+		t1.init(ar);
 
-		// System.out.println(t.test(25).val);
+		t.delete(25);
 
-		// t.add(58);
-		// System.out.println(t.width());
-		System.out.println("\n" + t.toString());
-		// System.out.println("\n" + t.leafs());
-		//
-		// t.toString();
+		if (t.equals(t1))
+		{
+			System.out.println("correct");
+		}
+		else
+		{
+			System.out.println("incorrect");
+		}
+
+		System.out.println(t.toString());
+		System.out.println(t1.toString());
 	}
 }

@@ -1,15 +1,8 @@
 package bsTree;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Label;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Iterator;
 
-import javax.swing.JPanel;
-
-public class BsTree implements IBsTree
+public class BsTree implements IBsTree, Iterable<Integer>
 {
 
 	protected class Node
@@ -326,7 +319,8 @@ public class BsTree implements IBsTree
 		}
 		else if (p.left != null && p.left.val == val)
 		{
-			if (p.left == null)
+			// Лист
+			if (p.left == null && p.right == null)
 			{
 				p = null;
 			}
@@ -337,7 +331,8 @@ public class BsTree implements IBsTree
 		}
 		else if (p.right != null && p.right.val == val)
 		{
-			if (p.right == null)
+			// Лист
+			if (p.left == null && p.right == null)
 			{
 				p = null;
 			}
@@ -355,7 +350,6 @@ public class BsTree implements IBsTree
 	// Поиск эелемента, которым будем заменять удаляемый
 	Node findDel(Node p, int val)
 	{
-
 		{
 			if (p == null)
 			{
@@ -409,7 +403,6 @@ public class BsTree implements IBsTree
 		{
 			if (p.val < root.val && p.right.right == null && val < p.right.val)
 			{
-				// System.out.println(p.val);
 				m = p;
 			}
 		}
@@ -425,13 +418,21 @@ public class BsTree implements IBsTree
 		{
 			return;
 		}
-//		deleteEnd(p, val);
-		c = p.left;
+
+		// deleteEnd(c, val);
+		// Удаляем листы и узлы с одним потомком
+		// ==============================================================
+
+		// ==============================================================
+
 		// Обработка ситуации с одной вершиной без потомков
 		// Вершина левый 1-н потомок
 		// Вершина один правый потомок
 		// Вершина и только левый и правый потомок
 		// ===================================================================
+
+		c = p.left;
+
 		if (val == root.val)
 		{
 			if (root != null && root.left == null && root.right == null)
@@ -444,11 +445,8 @@ public class BsTree implements IBsTree
 				root.right = null;
 				root = p.left;
 				root.right = tmp;
-
-				// System.out.println(root.right.val);
-				// p.left.right = root.right;
-
 			}
+
 			if (root.left == null && root.right != null)
 			{
 				root = p.right;
@@ -469,23 +467,53 @@ public class BsTree implements IBsTree
 		// ====================================================================
 
 		deleteTwo(p.left, c, val);
+
+		// Листья
+
+		if (p.left != null && p.left.val == val)
+		{
+			// Лист
+			if (p.left == null && p.right == null)
+			{
+				p = null;
+			}
+			else
+			{
+				p.left = p.left.left;
+			}
+		}
+		else if (p.right != null && p.right.val == val)
+		{
+			// Лист
+			if (p.left == null && p.right == null)
+			{
+				p = null;
+			}
+			else
+			{
+				p.right = p.right.right;
+			}
+		}
+
+		Node parent = null;
+		Node find = null;
+		// Узлы
 		if (p.left != null)
 		{
 			if (val == c.val)
 			{
-				Node parent = findDel(c, c.val);
-				Node find = findDel(c, c.val).right;
+				parent = findDel(c, c.val);
+				find = findDel(c, c.val).right;
 				find.right = c.right;
 				find.left = c.left;
 				p.left = find;
 				parent.right = null;
-				System.out.println(p.left.val);
+				System.out.println(find.val);
 			}
+
 		}
 
-		// System.out.println(p.val);
 		deleteTwo(p.right, c, val);
-
 	}
 
 	@Override
@@ -512,5 +540,55 @@ public class BsTree implements IBsTree
 			System.out.print(p.val + ": left, ");
 		}
 		show(p.right);
+	}
+
+	private boolean equalsNode(Node p, Node p1)
+	{
+		if (p == null || p1 == null)
+		{
+			return false;
+		}
+
+		if (p.val == p1.val)
+		{
+			return (equalsNode(p.left, p1.left) == equalsNode(p.right, p1.right));
+		}
+		return false;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		BsTree t = (BsTree) obj;
+		return equalsNode(root, t.root);
+	}
+
+	@Override
+	public Iterator<Integer> iterator()
+	{
+		return new BSTreeIterator(toArray());
+	}
+
+	class BSTreeIterator implements Iterator<Integer>
+	{
+		int[] arr = null;
+		int index = 0;
+
+		public BSTreeIterator(int[] array)
+		{
+			this.arr = array;
+		}
+
+		@Override
+		public boolean hasNext()
+		{
+			return index < arr.length;
+		}
+
+		@Override
+		public Integer next()
+		{
+			return arr[index++];
+		}
 	}
 }

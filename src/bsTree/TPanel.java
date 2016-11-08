@@ -14,44 +14,32 @@ import javax.swing.JTextField;
 
 public class TPanel extends JPanel
 {
-	JTextField jtf = null;
 
 	public TPanel()
 	{
 		setLayout(null);
-		jtf = new JTextField("0");
+		
 		JButton btn = new JButton("show");
 
-		JButton add = new JButton("add");
-		add.setBounds(150, 10, 120, 20);
+		JButton clear = new JButton("Clear");
+		clear.addActionListener(new Clear());
+		clear.setBounds(150, 10, 120, 20);
 
-		jtf.setBounds(350, 10, 120, 20);
-		add(jtf);
+		JButton btnDel = new JButton("show Vertical");
+		btnDel.addActionListener(new ShowVertAction());
 
 		btn.setBounds(10, 10, 120, 20);
 		btn.addActionListener(new ShowAction());
+
+		btnDel.setBounds(300, 10, 120, 20);
+
 		add(btn);
-		add(add);
+		add(clear);
+		add(btnDel);
 
 		setBounds(20, 20, 1000, 800);
 		setBackground(Color.white);
 
-		add.addActionListener(new ActionListener()
-		{
-
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				int[] ar = { 50, 25, 30, 11, 7, 12, 75, 90, 110, 13 };
-				int d = Integer.parseInt(jtf.getText());
-				BsTreeGr gr = new BsTreeGr();
-				gr.init(ar);
-				gr.add(d);
-
-				gr.show(TPanel.this);
-
-			}
-		});
 	}
 
 	class ShowAction implements ActionListener
@@ -59,15 +47,40 @@ public class TPanel extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
-			int[] ar = { 50, 25, 30, 11, 12, 13, 7, 75, 90, 110, 70, 60, 6, 80, 79 };
-			// int[] ar = { 50, 25, 30, 11, 7, 75, 90, 110,70};
+			int[] ar = { 50, 25, 30, 11, 7, 12, 75, 90, 110, 13, 70 };
 
 			BsTreeGr gr = new BsTreeGr();
 			gr.init(ar);
-			// gr.add(d);
+			// gr.delete(25);
 
 			gr.show(TPanel.this);
 
 		}
 	}
+
+	class ShowVertAction implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			int[] ar = { 50, 25, 30, 11, 7, 12, 75, 90, 110, 13, 70 };
+
+			BsTreeGr gr = new BsTreeGr();
+			gr.init(ar);
+			// gr.delete(25);
+
+			gr.showVert(TPanel.this);
+
+		}
+	}
+
+	class Clear implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			repaint();
+		}
+	}
+
 }
