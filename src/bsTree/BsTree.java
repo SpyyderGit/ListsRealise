@@ -18,6 +18,14 @@ public class BsTree implements IBsTree, Iterable<Integer>
 
 	}
 
+	class TmpClass
+	{
+		private int i = 0;
+		private int res = 0;
+
+	}
+
+	private TmpClass c = new TmpClass();
 	protected Node root = null;
 
 	@Override
@@ -95,8 +103,6 @@ public class BsTree implements IBsTree, Iterable<Integer>
 		return size(root);
 	}
 
-	private int i = 0;
-
 	private int[] toArray(int[] ar, Node p)
 	{
 		if (p == null)
@@ -104,7 +110,7 @@ public class BsTree implements IBsTree, Iterable<Integer>
 			return null;
 		}
 		toArray(ar, p.left);
-		ar[i++] = p.val;
+		ar[c.i++] = p.val;
 		toArray(ar, p.right);
 
 		return ar;
@@ -184,8 +190,6 @@ public class BsTree implements IBsTree, Iterable<Integer>
 		return leaves(root);
 	}
 
-	private int res = 0;
-
 	private int height(Node p)
 	{
 		if (p == null)
@@ -203,13 +207,13 @@ public class BsTree implements IBsTree, Iterable<Integer>
 
 		if (countLeft > countRight)
 		{
-			res = countLeft;
+			c.res = countLeft;
 		}
 		else
 		{
-			res = countRight;
+			c.res = countRight;
 		}
-		return res;
+		return c.res;
 	}
 
 	@Override
@@ -348,14 +352,14 @@ public class BsTree implements IBsTree, Iterable<Integer>
 	int count = 0;
 
 	// Поиск эелемента, которым будем заменять удаляемый
-	Node findDel(Node p, int val)
+	Node reciver(Node p, int val)
 	{
 		{
 			if (p == null)
 			{
 				return null;
 			}
-			findDel(p.left, val);
+			reciver(p.left, val);
 
 			if (p.right != null)
 			{
@@ -378,7 +382,7 @@ public class BsTree implements IBsTree, Iterable<Integer>
 				}
 			}
 
-			findDel(p.right, val);
+			reciver(p.right, val);
 			return n;
 		}
 	}
@@ -386,7 +390,7 @@ public class BsTree implements IBsTree, Iterable<Integer>
 	Node test(int val)
 	{
 		// System.out.println(findDel(root, val));
-		return findDel(root, val);
+		return reciver(root, val);
 	}
 
 	// Поиск самого большого значения в левой подветке
@@ -411,109 +415,29 @@ public class BsTree implements IBsTree, Iterable<Integer>
 		return m;
 	}
 
-	void deleteTwo(Node p, Node c, int val)
+	private void deleteNode(Node parent, Node baby, int val)
 	{
-
-		if (p == null)
+		if (parent == null)
 		{
 			return;
 		}
 
-		// deleteEnd(c, val);
-		// Удаляем листы и узлы с одним потомком
-		// ==============================================================
+		// ========== Удаляем корень (root) =============
 
-		// ==============================================================
+		baby = parent.left;
 
-		// Обработка ситуации с одной вершиной без потомков
-		// Вершина левый 1-н потомок
-		// Вершина один правый потомок
-		// Вершина и только левый и правый потомок
-		// ===================================================================
-
-		c = p.left;
-
+//		deleteEnd(parent.left, val);
 		if (val == root.val)
 		{
-			if (root != null && root.left == null && root.right == null)
-			{
-				root = null;
-			}
-			else if (root.left != null && root.right != null)
-			{
-				Node tmp = root.right;
-				root.right = null;
-				root = p.left;
-				root.right = tmp;
-			}
+			Node tmp = reciver(parent, val).right;
+//			tmp.left = root.left;
+//			tmp.right = root.right;
+//			 root = tmp;
 
-			if (root.left == null && root.right != null)
-			{
-				root = p.right;
-			}
-			if (root.left != null && root.right == null)
-			{
-				root = p.left;
-			}
+			 System.out.println(tmp.val + " " + tmp.left.val);
 		}
+//		deleteEnd(parent.right, val);
 
-		// Удаление листов и узлов с одним потомком
-
-		// ====================================================================
-
-		// Обработка ситуации с вершиной, потомками и поддеревьями
-		// Нужно найти самый большой узел в левой ветке
-
-		// ====================================================================
-
-		deleteTwo(p.left, c, val);
-
-		// Листья
-
-		if (p.left != null && p.left.val == val)
-		{
-			// Лист
-			if (p.left == null && p.right == null)
-			{
-				p = null;
-			}
-			else
-			{
-				p.left = p.left.left;
-			}
-		}
-		else if (p.right != null && p.right.val == val)
-		{
-			// Лист
-			if (p.left == null && p.right == null)
-			{
-				p = null;
-			}
-			else
-			{
-				p.right = p.right.right;
-			}
-		}
-
-		Node parent = null;
-		Node find = null;
-		// Узлы
-		if (p.left != null)
-		{
-			if (val == c.val)
-			{
-				parent = findDel(c, c.val);
-				find = findDel(c, c.val).right;
-				find.right = c.right;
-				find.left = c.left;
-				p.left = find;
-				parent.right = null;
-				System.out.println(find.val);
-			}
-
-		}
-
-		deleteTwo(p.right, c, val);
 	}
 
 	@Override
@@ -523,9 +447,112 @@ public class BsTree implements IBsTree, Iterable<Integer>
 		{
 			return;
 		}
-		deleteTwo(root, root, val);
-		// deleteEnd(root, val);
+		deleteNode(root, root, val);
+		// System.out.println(reciver(root, val).right.val);
 	}
+
+	// void deleteTwo(Node p, Node c, int val)
+	// {
+	//
+	// if (p == null)
+	// {
+	// return;
+	// }
+	//
+	// // deleteEnd(c, val);
+	// // Удаляем листы и узлы с одним потомком
+	// // ==============================================================
+	//
+	// // ==============================================================
+	//
+	// // Обработка ситуации с одной вершиной без потомков
+	// // Вершина левый 1-н потомок
+	// // Вершина один правый потомок
+	// // Вершина и только левый и правый потомок
+	// // ===================================================================
+	//
+	// c = p.left;
+	//
+	// if (val == root.val)
+	// {
+	// if (root != null && root.left == null && root.right == null)
+	// {
+	// root = null;
+	// }
+	// else if (root.left != null && root.right != null)
+	// {
+	// Node tmp = root.right;
+	// root.right = null;
+	// root = p.left;
+	// root.right = tmp;
+	// }
+	//
+	// if (root.left == null && root.right != null)
+	// {
+	// root = p.right;
+	// }
+	// if (root.left != null && root.right == null)
+	// {
+	// root = p.left;
+	// }
+	// }
+	//
+	// // Удаление листов и узлов с одним потомком
+	//
+	// // ====================================================================
+	//
+	// // Обработка ситуации с вершиной, потомками и поддеревьями
+	// // Нужно найти самый большой узел в левой ветке
+	//
+	// // ====================================================================
+	//
+	// deleteTwo(p.left, c, val);
+	//
+	// // Листья
+	//
+	// if (p.left != null && p.left.val == val)
+	// {
+	// // Лист
+	// if (p.left == null && p.right == null)
+	// {
+	// p = null;
+	// }
+	// else
+	// {
+	// p.left = p.left.left;
+	// }
+	// }
+	// else if (p.right != null && p.right.val == val)
+	// {
+	// // Лист
+	// if (p.left == null && p.right == null)
+	// {
+	// p = null;
+	// }
+	// else
+	// {
+	// p.right = p.right.right;
+	// }
+	// }
+	//
+	// Node parent = null;
+	// Node find = null;
+	// // Узлы
+	// if (p.left != null)
+	// {
+	// if (val == c.val)
+	// {
+	// parent = findDel(c, c.val);
+	// find = findDel(c, c.val).right;
+	// find.right = c.right;
+	// find.left = c.left;
+	// p.left = find;
+	// parent.right = null;
+	// System.out.println(find.val);
+	// }
+	// }
+	// deleteTwo(p.right, c, val);
+	// }
 
 	private void show(Node p)
 	{
