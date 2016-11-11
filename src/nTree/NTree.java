@@ -8,7 +8,7 @@ public class NTree
 	{
 		private Integer val;
 		private int cnt;
-		Node[] n;
+		Node n;
 
 		public Node(Integer val)
 		{
@@ -22,13 +22,20 @@ public class NTree
 	public NTree(int cnt)
 	{
 		this.cnt = cnt;
+
+		
 	}
 
 	class Count
 	{
 		private int i = 0;
+		private int cntNode = 0;
 	}
 
+	
+	Integer[] arr = new Integer[cnt];
+	Node[] pArr = new Node[cnt + 1];
+	
 	private Count c = new Count();
 
 	private void addNode(Node p, int val)
@@ -38,13 +45,7 @@ public class NTree
 			return;
 		}
 
-		Integer[] arr = new Integer[cnt];
-		Node[] pArr = new Node[cnt + 1];
-
-		arr[c.i] = val;
-		pArr[c.i] = p;
-
-		System.out.print(arr[c.i] + ", ");
+		System.out.println(pArr[0]);
 		c.i++;
 
 	}

@@ -352,39 +352,69 @@ public class BsTree implements IBsTree, Iterable<Integer>
 	int count = 0;
 
 	// Поиск эелемента, которым будем заменять удаляемый
-	Node reciver(Node p, int val)
+	// Node reciver(Node p, int val)
+	// {
+	// {
+	// if (p == null)
+	// {
+	// return null;
+	// }
+	// reciver(p.left, val);
+	//
+	// if (p.right != null)
+	// {
+	// if (p.val < val)
+	// {
+	// if (p.right.right == null)
+	// {
+	// n = p;
+	// }
+	// }
+	// }
+	// else if (p.right != null)
+	// {
+	// if (p.val > val)
+	// {
+	// if (p.left.left == null)
+	// {
+	// n = p;
+	// }
+	// }
+	// }
+	//
+	// reciver(p.right, val);
+	// return n;
+	// }
+	// }
+
+	// Ищем самый левый элемент в правом поддереве
+
+	Node pp = null;
+	int cnt = 0;
+
+	private Node reciver(Node p, int val)
 	{
+		if (p == null)
 		{
-			if (p == null)
-			{
-				return null;
-			}
-			reciver(p.left, val);
-
-			if (p.right != null)
-			{
-				if (p.val < val)
-				{
-					if (p.right.right == null)
-					{
-						n = p;
-					}
-				}
-			}
-			else if (p.right != null)
-			{
-				if (p.val > val)
-				{
-					if (p.left.left == null)
-					{
-						n = p;
-					}
-				}
-			}
-
-			reciver(p.right, val);
-			return n;
+			return null;
 		}
+
+		reciver(p.right, val);
+
+		if (p.left != null)
+		{
+			reciver(p.left, val);
+			if (p.left.left == null)
+			{
+				cnt++;
+				if (cnt == 1)
+				{
+					pp = p;
+				}
+			}
+		}
+
+		return pp;
 	}
 
 	Node test(int val)
@@ -415,6 +445,8 @@ public class BsTree implements IBsTree, Iterable<Integer>
 		return m;
 	}
 
+	// Удаление поворотом
+
 	private void deleteNode(Node parent, Node baby, int val)
 	{
 		if (parent == null)
@@ -426,17 +458,18 @@ public class BsTree implements IBsTree, Iterable<Integer>
 
 		baby = parent.left;
 
-//		deleteEnd(parent.left, val);
+		deleteEnd(parent.left, val);
 		if (val == root.val)
 		{
-			Node tmp = reciver(parent, val).right;
-//			tmp.left = root.left;
-//			tmp.right = root.right;
-//			 root = tmp;
-
-			 System.out.println(tmp.val + " " + tmp.left.val);
+			Node tmp = reciver(parent, val).left;
+			reciver(parent, val).left = null;
+			tmp.left = root.left;
+			tmp.right = root.right;
+			root = tmp;
+			System.out.println(root.val);
 		}
-//		deleteEnd(parent.right, val);
+
+		deleteEnd(parent.right, val);
 
 	}
 

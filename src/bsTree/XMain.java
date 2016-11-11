@@ -16,10 +16,12 @@ public class XMain
 	public static void main(String[] args)
 	{
 		BsTree t = new BsTree();
-		int[] ar = { 50, 25, 30, 11, 7, 12, 75, 90, 110, 13, 70, 35, 28 };
+		int[] ar = { 50, 40, 43, 45, 42, 46, 35, 38, 37, 30, 54, 53, 60, 58, 66 };
 
 		t.init(ar);
 		t.delete(50);
-		 System.out.println(t.toString());
+
+		// System.out.println(t.test(50).val);
+		System.out.println(t.toString());
 	}
 }
