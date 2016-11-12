@@ -3,6 +3,7 @@ package test;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import bsTree.BsTree;
@@ -511,4 +512,186 @@ public class BsTreeTest
 		assertArrayEquals(expecteds, actuals);
 	}
 
+	// Узел с одним правым потомком-листом
+
+	@Test
+	public void testDel_NodeRightLeaf()
+	{
+		int[] ar = { 50, 25, 30, 11, 12, 13, 7, 75, 90, 110, 70 };
+		t.init(ar);
+		t.delete(90);
+		int[] actuals = { 7, 11, 12, 13, 25, 30, 50, 70, 75, 110 };
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+	}
+
+	// Узел с одним левым потомком-листом
+
+	@Test
+	public void testDel_NodeLeftLeaf()
+	{
+		int[] ar = { 50, 25, 30, 11, 12, 13, 7, 75, 90, 110, 70, 60 };
+		t.init(ar);
+		t.delete(70);
+		int[] actuals = { 7, 11, 12, 13, 25, 30, 50, 60, 75, 90, 110 };
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+	}
+
+	// Узел с одним левым потомком-листом
+
+	@Test
+	public void testDel_NodeLeft_RLeaf()
+	{
+		int[] ar = { 50, 25, 30, 11, 12, 13, 7, 75, 90, 110, 70, 60 };
+		t.init(ar);
+		t.delete(12);
+		int[] actuals = { 7, 11, 13, 25, 30, 50, 60, 70, 75, 90, 110 };
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+	}
+
+	// Узел с одним левым потомком-листом
+	@Test
+	public void testDel_NodeLeft_LLeaf()
+	{
+		int[] ar = { 50, 25, 30, 11, 12, 13, 7, 75, 90, 110, 70, 60, 6 };
+		t.init(ar);
+		t.delete(6);
+		int[] actuals = { 7, 11, 12, 13, 25, 30, 50, 60, 70, 75, 90, 110 };
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+	}
+
+	// Узел с правым и левым потомком-листом
+	@Test
+	public void testDel_NodeLeft_Leaf()
+	{
+		int[] ar = { 50, 25, 30, 11, 12, 13, 7, 75, 90, 110, 70, 60, 6 };
+		t.init(ar);
+		t.delete(80);
+		int[] actuals = { 6, 7, 11, 12, 13, 25, 30, 50, 60, 70, 75, 90, 110 };
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+	}
+
+	// Удаление вершины, если один узел без потомков
+	@Test(expected = NullPointerException.class)
+	public void testDel_RootWithoutChild()
+	{
+		int[] ar = { 50 };
+		t.init(ar);
+		t.delete(50);
+		int[] actuals = null;
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+	}
+
+	// Удаление вершины c левым потомком
+	@Test
+	public void testDel_RootWithLeftChild()
+	{
+		int[] ar = { 50, 25 };
+		t.init(ar);
+		t.delete(50);
+		int[] actuals = { 25 };
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+	}
+
+	// Удаление вершины c правым потомком
+	@Test
+	public void testDel_RootWithRightChild()
+	{
+		int[] ar = { 50, 75 };
+		t.init(ar);
+		t.delete(50);
+		int[] actuals = { 75 };
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+	}
+
+	// Удаление вершины c правым потомком (Доработать)
+	@Ignore
+	@Test
+	public void testDel_RootWithChildren()
+	{
+		int[] ar = { 50, 75, 25 };
+		t.init(ar);
+		t.delete(50);
+		int[] actuals = { 25, 75 };
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+	}
+
+	// Удаление вершины c правым потомком (Доработать)
+	@Ignore
+	@Test
+	public void testDel_RootWithRTree()
+	{
+		int[] ar = { 50, 75, 60, 80 };
+		t.init(ar);
+		t.delete(50);
+		int[] actuals = { 60, 75, 80 };
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+	}
+
+	// Удаление вершины c левым деревом (Доработать)
+	@Ignore
+	@Test
+	public void testDel_RootWithLTree()
+	{
+		int[] ar = { 50, 25, 20, 30 };
+		t.init(ar);
+		t.delete(50);
+		int[] actuals = { 20, 25, 30 };
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+	}
+
+	// Удаление вершины c правым и левым деревом (Доработать)
+	// Проверка черех equals
+	@Ignore
+	@Test
+	public void testDel_RootWithLRTree()
+	{
+		int[] ar = { 50, 25, 30, 11, 12, 13, 7, 75, 90, 110, 70, 60, 6, 80 };
+		t.init(ar);
+		t.delete(50);
+		int[] actuals = { 30, 25, 11, 12, 13, 7, 75, 90, 110, 70, 60, 6, 80 };
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+	}
+
+	// Удаление узла с 2-мя деревьями слева
+	@Test
+	public void testDel_NodeWithLRTrees()
+	{
+		int[] ar = { 50, 25, 30, 11, 12, 13, 7, 75, 90, 110, 70, 60, 6, 80 };
+		t.init(ar);
+		t.delete(25);
+		int[] actuals = { 7, 11, 12, 13, 25, 30, 50, 70, 75, 90, 110 };
+		int[] expecteds = t.toArray();
+		assertArrayEquals(expecteds, actuals);
+	}
+
+	// Итератор
+
+	@Test
+	public void testDel_TreeIter()
+	{
+		int[] ar = { 50, 25, 30, 11, 12, 13, 7, 75, 90, 110, 70 };
+		t.init(ar);
+		int[] actuals = new int[ar.length];
+		int[] expecteds = t.toArray();
+		int ind = 0;
+
+		for (int i : expecteds)
+		{
+			actuals[ind++] = i;
+		}
+
+		assertArrayEquals(expecteds, actuals);
+	}
 }

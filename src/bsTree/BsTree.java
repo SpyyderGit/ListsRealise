@@ -173,7 +173,6 @@ public class BsTree implements IBsTree, Iterable<Integer>
 
 		if (p.left == null && p.right == null)
 		{
-
 			count++;
 		}
 		else
@@ -399,12 +398,12 @@ public class BsTree implements IBsTree, Iterable<Integer>
 			return null;
 		}
 
-		reciver(p.right, val);
+		reciver(p.left, val);
 
-		if (p.left != null)
+		if (p.right != null)
 		{
-			reciver(p.left, val);
-			if (p.left.left == null)
+			reciver(p.right, val);
+			if (p.right.right == null)
 			{
 				cnt++;
 				if (cnt == 1)
@@ -416,71 +415,151 @@ public class BsTree implements IBsTree, Iterable<Integer>
 
 		return pp;
 	}
-
-	Node test(int val)
-	{
-		// System.out.println(findDel(root, val));
-		return reciver(root, val);
-	}
+	//
+	// Node test(int val)
+	// {
+	// // System.out.println(findDel(root, val));
+	// return reciver(root, val);
+	// }
 
 	// Поиск самого большого значения в левой подветке
-	Node m = null;
 
-	private Node searchMaxInLeft(Node p, int val)
+	// private Node searchMaxInLeft(Node p, int val)
+	// {
+	// if (p == null)
+	// {
+	// return null;
+	// }
+	//
+	// if (p.right != null)
+	// {
+	// if (p.val < root.val && p.right.right == null && val < p.right.val)
+	// {
+	// m = p;
+	// }
+	// }
+	// searchMaxInLeft(p.right, val);
+	// searchMaxInLeft(p.left, val);
+	// return m;
+	// }
+
+	// Удаление поворотом
+	//
+	// private void deleteNode(Node parent, Node baby, int val)
+	// {
+	// if (parent == null)
+	// {
+	// return;
+	// }
+	//
+	// // ========== Удаляем корень (root) =============
+	//
+	// baby = parent.left;
+	//
+	// deleteEnd(parent.left, val);
+	// if (val == root.val)
+	// {
+	// Node tmp = reciver(parent, val).left;
+	// reciver(parent, val).left = null;
+	// tmp.left = root.left;
+	// tmp.right = root.right;
+	// root = tmp;
+	// System.out.println(root.val);
+	// }
+	//
+	// deleteEnd(parent.right, val);
+	//
+	// }
+
+	private Node deleteNode(Node p, int val)
 	{
 		if (p == null)
 		{
 			return null;
 		}
-
-		if (p.right != null)
+		if (val < p.val)
 		{
-			if (p.val < root.val && p.right.right == null && val < p.right.val)
+			p.left = deleteNode(p.left, val);
+
+			if (p.left.val == val)
 			{
-				m = p;
+				if (p.left != null && p.right != null)
+				{
+					Node tmp = reciver(p, val).right;
+
+					if (tmp.left == null)
+					{
+						reciver(p, val).right = null;
+						tmp.right = p.left.right;
+						tmp.left = p.left.left;
+						p.left = tmp;
+					}
+					else if (tmp.left != null)
+					{
+						Node par = reciver(p, val);
+
+						par.right = tmp.left;
+						tmp.left = null;
+						tmp.right = p.left.right;
+						tmp.left = p.left.left;
+						p.left = tmp;
+					}
+				}
 			}
+			// if (val == p.left.val)
+			// {
+			// if (p.left.left == null && p.right.right == null)
+			// {
+			// p.left = null;
+			// }
+			// else if (p.left.left != null && p.right.right == null)
+			// {
+			// System.out.println(p.val);
+			// }
+			// else if (p.left != null && p.right != null)
+			// {
+			// Node tmp = reciver(p, val).right;
+			//
+			// if (tmp.left == null)
+			// {
+			// reciver(p, val).right = null;
+			// tmp.right = p.left.right;
+			// tmp.left = p.left.left;
+			// p.left = tmp;
+			// }
+			// else if (tmp.left != null)
+			// {
+			// Node par = reciver(p, val);
+			//
+			// par.right = tmp.left;
+			// tmp.left = null;
+			// tmp.right = p.left.right;
+			// tmp.left = p.left.left;
+			// p.left = tmp;
+			// }
+			// }
+			// }
 		}
-		searchMaxInLeft(p.right, val);
-		searchMaxInLeft(p.left, val);
-		return m;
-	}
-
-	// Удаление поворотом
-
-	private void deleteNode(Node parent, Node baby, int val)
-	{
-		if (parent == null)
+		else if (val > p.val)
 		{
-			return;
+			p.right = deleteNode(p.right, val);
+
 		}
-
-		// ========== Удаляем корень (root) =============
-
-		baby = parent.left;
-
-		deleteEnd(parent.left, val);
-		if (val == root.val)
+		else
 		{
-			Node tmp = reciver(parent, val).left;
-			reciver(parent, val).left = null;
-			tmp.left = root.left;
-			tmp.right = root.right;
-			root = tmp;
-			System.out.println(root.val);
+
 		}
-
-		deleteEnd(parent.right, val);
-
+		return p;
 	}
 
 	@Override
 	public void delete(int val)
 	{
-		if (root == null)
-		{
-			return;
-		}
-		deleteNode(root, root, val);
+		// if (root == null)
+		// {
+		// return;
+		// }
+		deleteNode(root, val);
 		// System.out.println(reciver(root, val).right.val);
 	}
 
