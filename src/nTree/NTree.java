@@ -4,27 +4,27 @@ import java.util.Arrays;
 
 public class NTree
 {
+
+	private int size = 0;
+
+	public NTree(int size)
+	{
+		this.size = size;
+
+	}
+
 	class Node
 	{
-		private Integer val;
-		private int cnt;
-		Node n;
+		Integer[] arr = new Integer[size];
+		Node[] pArr = new Node[size + 1];
 
-		public Node(Integer val)
+		public Node(int val)
 		{
-			this.val = val;
+			arr[0] = val;
 		}
 	}
 
 	private Node root = null;
-	private int cnt = 0;
-
-	public NTree(int cnt)
-	{
-		this.cnt = cnt;
-
-		
-	}
 
 	class Count
 	{
@@ -32,22 +32,56 @@ public class NTree
 		private int cntNode = 0;
 	}
 
-	
-	Integer[] arr = new Integer[cnt];
-	Node[] pArr = new Node[cnt + 1];
-	
 	private Count c = new Count();
 
 	private void addNode(Node p, int val)
 	{
-		if (p == null)
+		if (p.arr[size - 1] == null)
 		{
-			return;
+			for (int i = 1; i < size; i++)
+			{
+				if (p.arr[i] == null)
+				{
+					p.arr[i] = val;
+					return;
+				}
+			}
 		}
+		else
+		{
+			if (val > p.arr[size - 1])
+			{
+				if (p.pArr[size] == null)
+				{
+					p.pArr[size] = new Node(val);
+				}
+				else
+				{
+					addNode(p.pArr[size], val);
+				}
+			}
+			else
+			{
+				for (int i = 0; i < size; i++)
+				{
+					if (val < p.arr[i])
+					{
+						if (p.pArr[i] == null)
+						{
+							p.pArr[i] = new Node(val);
+							System.out.println(p.arr[i]);
+						}
+						else
+						{
+							addNode(p.pArr[i], val);
+							System.out.println(p.arr[i]);
+						}
+						return;
+					}
 
-		System.out.println(pArr[0]);
-		c.i++;
-
+				}
+			}
+		}
 	}
 
 	public void add(int val)
@@ -66,6 +100,5 @@ public class NTree
 		{
 			add(i);
 		}
-
 	}
 }
